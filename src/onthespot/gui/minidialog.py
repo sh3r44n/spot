@@ -24,7 +24,6 @@ class MiniDialog(QDialog):
           with open(self.dark_theme_path, 'r') as f:
               dark_theme = f.read()
               self.setStyleSheet(dark_theme)
-        self.setStyleSheet(config.get("theme"))
 
         def load_dark_theme(self):
             with open(self.dark_theme_path, 'r') as f:
