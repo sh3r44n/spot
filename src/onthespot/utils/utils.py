@@ -246,16 +246,12 @@ def get_now_playing_local(session):
     if platform.system() == "Linux":
         logger.debug("Linux detected ! Use playerctl to get current track information..")
         try:
-            playerctl_out = subprocess.check_output(["playerctl", "-p", "spotify", "metadata"])
+            playerctl_out = subprocess.check_output(["playerctl", "-p", "spotify,spotifyd", "metadata", "xesam:url"])
         except subprocess.CalledProcessError:
             logger.debug("Spotify not running..")
             return ""
-        found = re.search(r"((spotify xesam:url).*https:\/\/open.spotify.*\n)", playerctl_out.decode())
-        if found:
-            spotify_url = found.group(1).replace("spotify xesam:url", "").strip()
-            return spotify_url
-        else:
-            return ""
+        spotify_url = playerctl_out.decode()
+        return spotify_url
     elif platform.system() == "Windows":
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
